@@ -90,6 +90,13 @@ public:
              << setw(20) << left << price 
              << setw(20) << left << capitalizeFirstLetter(category)  << endl;
     }
+    
+    void displayItemsByCategoryAndSortItems() const {
+        cout << setw(20) << left << capitalizeFirstLetter(id) 
+             << setw(20) << left << capitalizeFirstLetter(name) 
+             << setw(20) << left << quantity
+             << setw(20) << left << price << endl;
+    }
 };
 
 class InventoryBase {
@@ -108,39 +115,29 @@ class Inventory : public InventoryBase {
 private:
     vector<Item> items;  // Replace array with vector
 
-    void manualSwap(Item& a, Item& b) {
-        Item temp = a;
-        a = b;
-        b = temp;
-    }
 
+     
     void bubbleSort(const string& sortBy, const string& order) {
-        int itemCount = items.size();
+    	int itemCount = items.size();
         for (int i = 0; i < itemCount - 1; i++) {
             for (int j = 0; j < itemCount - i - 1; j++) {
-              
+                bool condition;
                 if (sortBy == "quantity") {
-                    if (order == "ascending") {
-                        items[j].getQuantity() > items[j + 1].getQuantity();
-                        manualSwap(items[j], items[j + 1]);
-                    } else {
-                        items[j].getQuantity() < items[j + 1].getQuantity();
-                        manualSwap(items[j], items[j + 1]);
-                    }
-                } else {  
-                    if (order == "ascending") {
-                        items[j].getPrice() > items[j + 1].getPrice();
-                        manualSwap(items[j], items[j + 1]);
-                    } else {
-                        items[j].getPrice() < items[j + 1].getPrice();
-                        manualSwap(items[j], items[j + 1]);
-                    }
+                    condition = (order == "ascending") ? items[j].getQuantity() > items[j + 1].getQuantity()
+                                                       : items[j].getQuantity() < items[j + 1].getQuantity();
+                } else if (sortBy == "price") { 
+                    condition = (order == "ascending") ? items[j].getPrice() > items[j + 1].getPrice()
+                                                       : items[j].getPrice() < items[j + 1].getPrice();
+                } // using ternary functions for a concise way to express conditional expressions
+                if (condition) {
+                    Item temp = items[j];
+                    items[j] = items[j + 1];
+                    items[j + 1] = temp;
                 }
-
-              
             }
         }
     }
+    
 
 public:
 	
@@ -167,11 +164,10 @@ public:
         	cout << "Item not found!" << endl;
         	return;
    	 	}	
-
-    // Proceed with the update if the item is found
+   	 	
     	if (toLowerCase(field) == "quantity") {
        		int oldQuantity = items[index].getQuantity();
-        	items[index].setQuantity(static_cast<int>(newValue));
+        	items[index].setQuantity(newValue);
         	cout << "Quantity of Item " << items[index].getName() << " updated from " << oldQuantity << " to " << items[index].getQuantity() << endl;
    		} else if (toLowerCase(field) == "price") {
         	double oldPrice = items[index].getPrice();
@@ -210,10 +206,7 @@ public:
             	}
             	
                 found = true;
-          		cout << setw(20) << left << capitalizeFirstLetter(items[i].getId())
-                 	 << setw(20) << left << capitalizeFirstLetter(items[i].getName())
-                 	 << setw(20) << left << items[i].getQuantity()
-                	 << setw(20) << left << items[i].getPrice() << endl;
+          		items[i].displayItemsByCategoryAndSortItems();
             }
         }
         if (found == false) {
@@ -265,10 +258,7 @@ public:
        		 cout << setw(20) << left << "ID" << setw(20) << left << "Name" << setw(20) << left << "Quantity" << setw(20) << left << "Price" << endl;
        		 
   		for (int i = 0; i < items.size(); i++) {
-        	cout << setw(20) << left << capitalizeFirstLetter(items[i].getId())
-             << setw(20) << left << capitalizeFirstLetter(items[i].getName())
-             << setw(20) << left << items[i].getQuantity()
-             << setw(20) << left << items[i].getPrice() << endl;
+        	items[i].displayItemsByCategoryAndSortItems();
    		 }
     }
 
@@ -282,10 +272,7 @@ public:
                      << setw(20) << left << "Quantity" << setw(20) << left << "Price" << endl;
             	}
             	found = true;
-           		 cout << setw(20) << left << capitalizeFirstLetter(items[i].getId())
-                 << setw(20) << left << capitalizeFirstLetter(items[i].getName())
-                 << setw(20) << left << items[i].getQuantity()
-                 << setw(20) << left << items[i].getPrice() << endl;
+				items[i].display();
         }
     }
     if (found == false) {

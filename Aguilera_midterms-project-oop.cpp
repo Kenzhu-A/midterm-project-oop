@@ -127,7 +127,7 @@ private:
                         items[j].getQuantity() < items[j + 1].getQuantity();
                         manualSwap(items[j], items[j + 1]);
                     }
-                } else if (sortBy == "price"){  
+                } else {  
                     if (order == "ascending") {
                         items[j].getPrice() > items[j + 1].getPrice();
                         manualSwap(items[j], items[j + 1]);

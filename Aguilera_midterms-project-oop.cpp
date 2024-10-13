@@ -318,10 +318,12 @@ int main() {
                 }
             } while (isValidCategory(category) == false);
             
-            cout << "Enter Item ID: ";
-            cin >> id;
+          	cin.ignore();
+          
+		    cout << "Enter Item ID: ";
+            getline (cin, id);
             cout << "Enter Item Name: ";
-            cin >> name;
+            getline (cin, name);
 
             quantity = inputInteger("Enter Quantity: ");
             price = inputDouble("Enter Price: ");
@@ -338,8 +340,9 @@ int main() {
                 break;
             }
             
+            cin.ignore(); 
             cout << "Enter Item ID to update: ";
-            cin >> id;
+            getline (cin, id);
             
                 int index = i1.findItemById(id);  
 
@@ -372,8 +375,9 @@ int main() {
                 break;
             }
             
+            cin.ignore(); 
             cout << "Enter Item ID to remove: ";
-            cin >> id;
+            getline (cin, id);
             i1.removeItem(id);
             break;
         }
@@ -409,8 +413,9 @@ int main() {
                 break;
             }
             
+            cin.ignore(); 
             cout << "Enter Item ID to search: ";
-            cin >> id;
+            getline (cin, id);
             i1.searchItem(id);
             break;
         }
